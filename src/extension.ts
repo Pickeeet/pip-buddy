@@ -29,7 +29,7 @@ let testApi: { bus: EventBus; brain: Brain } | undefined;
 /** Idle look between remarks: the night cap between 00:00 and 05:00, otherwise unimpressed. */
 const restingMood = (now: number): Mood => (localHour(now) <= 4 ? 'NIGHTCAP' : 'UNIMPRESSED');
 
-export function activate(ctx: vscode.ExtensionContext): void {
+export function activate(ctx: vscode.ExtensionContext): { bus: EventBus; brain: Brain } | undefined {
   const kv = ctx.globalState;
   const rng = Math.random;
   const state: PipState = load(kv, Date.now());
@@ -168,6 +168,8 @@ export function activate(ctx: vscode.ExtensionContext): void {
 
   testApi = process.env.PIP_TEST === '1' ? { bus, brain } : undefined;
   push();
+  // VS Code hands the return value to `extension.activate()` callers; undefined unless PIP_TEST=1.
+  return __testApi();
 }
 
 export async function deactivate(): Promise<void> {

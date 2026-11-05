@@ -1,5 +1,7 @@
 import { build, context } from 'esbuild';
 
+const production = process.argv.includes('--production');
+
 const options = {
   entryPoints: ['src/extension.ts'],
   bundle: true,
@@ -8,7 +10,8 @@ const options = {
   platform: 'node',
   format: 'cjs',
   target: 'node20',
-  sourcemap: true,
+  sourcemap: !production,
+  minify: production,
 };
 
 if (process.argv.includes('--watch')) {

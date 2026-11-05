@@ -9,3 +9,8 @@ node_modules/**
 esbuild.mjs
 vitest.config.ts
 tsconfig.json
+.vscode-test/**
+scripts/**
+.gitignore
+.vscodeignore
+package-lock.json

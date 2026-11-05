@@ -1,3 +1,7 @@
+Pip's note: VT323 and JetBrains Mono are bundled here as unmodified Google Fonts Latin subsets (the .woff2 files
+next to this one), used under the SIL Open Font License 1.1 reproduced below. The licence text that follows is
+unchanged; keep it with the fonts if you pass them on.
+
 Some of the files packed into this page (the "__bundler/manifest" data in this file, unpacked by the page’s script when it opens) are font files downloaded unchanged from Google Fonts (fonts.gstatic.com) when the page was saved. Google Fonts serves each family in pieces, one file per range of characters, so these may not be complete families. Each family’s license follows and still applies to its files. If you pass this file on, keep this comment in it.
 
 JetBrains Mono
