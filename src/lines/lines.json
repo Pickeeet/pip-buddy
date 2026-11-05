@@ -1,0 +1,386 @@
+{
+  "paste": {
+    "dry": [
+      "{count} characters pasted. Did you read them, or is this a trust exercise?",
+      "Ctrl+V. The most confident way to import someone else's bug.",
+      "That came from the internet. You do know that, right?",
+      "Pasted without reading. Bold. Wrong, probably, but bold.",
+      "Stack Overflow says hi. That answer is from 2013.",
+      "{count} characters in one keystroke. Efficiency, or surrender.",
+      "I'd ask if you understand it. I'd also ask for a pony.",
+      "Copy, paste, pray. Your whole methodology, in three verbs.",
+      "Ah yes, 'my code'. Sure."
+    ],
+    "savage": [
+      "{count} characters pasted. You read none of them. I was watching.",
+      "Ctrl+V. Importing a stranger's bug at the speed of regret.",
+      "That came from the internet. Written by someone who also didn't understand it.",
+      "Pasted without reading. Brave. Wrong, probably. Definitely wrong.",
+      "Stack Overflow says hi. The answer is from 2013. So is the bug.",
+      "{count} characters in one keystroke. That's not efficiency. That's surrender.",
+      "Do you understand it? Don't answer. I can see the commit coming.",
+      "Copy, paste, pray. Three verbs, zero comprehension.",
+      "'My code.' Say that again, slowly, while looking at your clipboard."
+    ]
+  },
+  "massDelete": {
+    "dry": [
+      "{count} characters, gone. Bold of you to assume you'll remember why.",
+      "Deleted a whole block. Hope it was the bad one. It wasn't, was it.",
+      "That was a lot of code for something you wrote an hour ago.",
+      "Out it goes. Somewhere, git blame is quietly taking notes.",
+      "{count} characters. Gone. Not even a eulogy.",
+      "Scorched earth. Bold strategy for a Tuesday.",
+      "You'll want that back in ten minutes. I'll say nothing. Loudly.",
+      "Delete first, think later. A classic.",
+      "That wasn't a refactor. That was an exorcism."
+    ],
+    "savage": [
+      "{count} characters, gone. You won't remember why. Neither will git.",
+      "Deleted a whole block. Please tell me it was the bad one. Don't lie to me.",
+      "That was a lot of code for something you wrote an hour ago. A lot.",
+      "Out it goes. Somewhere, git blame is sharpening a pencil.",
+      "{count} characters. Gone. No eulogy, no backup, no shame.",
+      "Scorched earth. Bold strategy, zero commits.",
+      "You'll want that back in ten minutes. I'll be here. Not saying it.",
+      "Delete first, think later. You do know that's backwards.",
+      "That wasn't a refactor. That was an exorcism with extra steps."
+    ]
+  },
+  "undoSpam": {
+    "dry": [
+      "Undo, undo, undo. The edit history wishes you luck.",
+      "{count} undos. Your past self had ideas. They were bad. So were these.",
+      "Ctrl+Z is not a plan.",
+      "Going backwards fast. Time travel by keyboard.",
+      "That's the sound of a mind being changed. Several times.",
+      "Undo spree. Reality, however, remains undeniably unedited.",
+      "You've undone more than you've written. Net progress: negative.",
+      "Somewhere in there was a good idea. We'll never find it now.",
+      "Rewinding like it's a tape. It's a text file."
+    ],
+    "savage": [
+      "Undo, undo, undo. The edit history has stopped taking calls.",
+      "{count} undos. Your past self had ideas. They were bad. These are worse.",
+      "Ctrl+Z is not a plan. Ctrl+Z is a symptom.",
+      "Going backwards fast. You could just decide. People do that.",
+      "That's the sound of a mind being changed. Repeatedly. Out loud.",
+      "Undo spree. And yet, the bug is still there. Odd.",
+      "You've undone more than you've written. Net progress: negative. Impressive.",
+      "There was a good idea in there. You undid it. I saw.",
+      "Rewinding like it's a tape. It's a text file. It has no feelings."
+    ]
+  },
+  "frenzy": {
+    "dry": [
+      "Wow, look at you go. Typing faster than you think. Literally.",
+      "Fast fingers. Shame they're not attached to a plan.",
+      "That's a lot of typing. I'll check later if any of it was words.",
+      "Velocity is not the same thing as direction.",
+      "Somebody had an idea. Somebody is not going to review it.",
+      "Typing at the speed of confidence. Not the speed of correctness.",
+      "Keep going. I'll pre-write the apology to future you.",
+      "Mid-sprint. No tests in sight. Classic.",
+      "You type like the bug is chasing you. It's already inside."
+    ],
+    "savage": [
+      "Wow, look at you go. Typing faster than you think. I mean that literally.",
+      "Fast fingers. Pity there's no plan on the other end of them.",
+      "That's a lot of typing. I'll go check whether any of it was words.",
+      "Velocity is not direction. You are very fast. And lost.",
+      "Somebody had an idea. Somebody will not be reviewing it. Somebody never does.",
+      "Typing at the speed of confidence, never the speed of correctness.",
+      "Keep going. I'm drafting the apology to future you. It's long.",
+      "Mid-sprint. Zero tests. I'm shocked, as always.",
+      "You type like the bug is chasing you. Fun fact: it's already inside."
+    ]
+  },
+  "debugPrint": {
+    "dry": [
+      "console.log #{count}. A debugger exists, but sure, do it your way.",
+      "Another print statement. Archaeology by log line.",
+      "console.log('here'). Truly, the language of the ancients.",
+      "Ah, printf debugging. Still undefeated. Still awful.",
+      "That's not logging. That's a cry for help in JSON.",
+      "A breakpoint would take two seconds. But no, let's decorate the console.",
+      "console.log('why'). Honest, at least.",
+      "You're going to forget to remove that. We both know it.",
+      "Debugging by confession. 'Is it this line? Is it this line?'"
+    ],
+    "savage": [
+      "console.log #{count}. A debugger exists. It's right there. Free. Unused.",
+      "Another print statement. Archaeology by log line. Digging with a spoon.",
+      "console.log('here'). Wow. Truly, the language of the ancients. And of the doomed.",
+      "Printf debugging. Still awful. Still your favourite. Both true.",
+      "That's not logging. That's a cry for help with a timestamp.",
+      "A breakpoint takes two seconds. You'd rather redecorate the console. Fine.",
+      "console.log('why'). Finally, a question worth asking.",
+      "You'll forget to remove that. It ships. Someone tweets it.",
+      "Debugging by confession. 'Is it this line? This one? This one?' No."
+    ]
+  },
+  "lateNight": {
+    "dry": [
+      "It's {time}. Normal people are asleep. You're here. Writing bugs.",
+      "{time}. Whatever you're fixing, you'll break again at 9 a.m.",
+      "It's {time}. The code will still be wrong in the morning. Rested.",
+      "{time} and still typing. Sleep is free, you know. Unlike this bug.",
+      "Your best work is not happening at {time}. I've seen the diff.",
+      "It's {time}. A great hour for regret. And for git push, apparently.",
+      "Only me and you awake at {time}. One of us is paid to be.",
+      "{time}. 'One more fix.' I've heard that one before. Several times tonight.",
+      "Nothing good ships after {time}. Nothing. Look it up."
+    ],
+    "savage": [
+      "It's {time}. Normal people are asleep. You're here. Writing bugs. Again.",
+      "{time}. Whatever you're fixing, you'll un-fix at 9 a.m. I'll watch.",
+      "It's {time}. The code will be just as wrong in the morning. You'll be worse.",
+      "{time} and still typing. Sleep is free. Your bugs are not.",
+      "Your best work is not happening at {time}. I've seen the diff. I've seen it all.",
+      "It's {time}. A great hour for regret. And a worse one for git push.",
+      "Just you and me awake at {time}. And I'm not even real.",
+      "{time}. 'One more fix.' You said that three fixes ago.",
+      "Nothing good ships after {time}. Nothing. Not once. Sleep."
+    ]
+  },
+  "idleReturn": {
+    "dry": [
+      "...zzz... wake me when you remember you have a job...",
+      "Oh. You're back. I'd gotten used to the quiet.",
+      "Welcome back. Everything is exactly as broken as you left it.",
+      "Where did you go? Don't tell me. I've heard the excuses.",
+      "You left. The cursor kept blinking. Loyal, unlike you.",
+      "Back from 'a quick break'. Sure. Quick.",
+      "I was napping. Fifteen seconds is a long time in sprite years.",
+      "Ah, the return of the prodigal developer. Briefly.",
+      "Nothing happened while you were gone. Same as when you're here."
+    ],
+    "savage": [
+      "...zzz... wake me when you remember you have a job... ...no hurry...",
+      "Oh. You're back. I'd really gotten used to the quiet.",
+      "Welcome back. Everything is exactly as broken. I checked. Twice.",
+      "Where did you go? No, don't. I've heard the excuses. They're all lunch.",
+      "You left. The cursor kept blinking. It has more dedication than you.",
+      "Back from 'a quick break'. Quick. Sure. Bless.",
+      "I was napping. Fifteen seconds is a long time in sprite years. I aged.",
+      "The prodigal developer returns. For about four minutes.",
+      "Nothing happened while you were gone. Same as when you're here. But quieter."
+    ]
+  },
+  "runFail": {
+    "dry": [
+      "Broken. Shocking. Nobody saw this coming. Except me. I saw it.",
+      "It failed. Again. At this point it's less a bug, more a roommate.",
+      "Red. Bold choice of colour for your terminal.",
+      "Run failed. You'll fix it by changing one character and not telling anyone.",
+      "Well. That's a stack trace. Frame it.",
+      "Fail number {streak}. I'm not counting. I'm literally counting.",
+      "The error message is trying to help. Read it. Just once.",
+      "It worked on your machine. This is your machine.",
+      "Exit code non-zero. Confidence also non-zero. Concerning."
+    ],
+    "savage": [
+      "Broken. Shocking. Nobody saw this coming. Except me. I saw it. I always see it.",
+      "It failed. Again. At this point it's not a bug, it's a tenant.",
+      "Red. Your terminal is the only thing here with a strong opinion.",
+      "Run failed. You'll fix it with one character and tell nobody. I'll know.",
+      "Well. That's a stack trace. Print it. Frame it. Hang it above the desk.",
+      "Fail number {streak}. I'm not counting. I am absolutely counting.",
+      "The error message is trying to help you. Read it. Once. For me.",
+      "It worked on your machine. This is your machine. Take a moment.",
+      "Exit code non-zero. Confidence also non-zero. That's the real bug."
+    ]
+  },
+  "runPass": {
+    "dry": [
+      "It runs?! Quick, screenshot it before you touch it again.",
+      "Green. I'm as surprised as you are. More, actually.",
+      "It passed. Don't look at it directly. It may leave.",
+      "Huh. It works. Suspicious. Check it didn't just skip everything.",
+      "Success. I'd clap, but I'm one pixel wide.",
+      "A run without errors. Mark the calendar. Then commit, before you ruin it.",
+      "Well, well. Even a broken clock compiles twice a day.",
+      "It works. Do not, under any circumstances, 'just tidy it up'.",
+      "Green. Now stop. This is the part where you stop."
+    ],
+    "savage": [
+      "It runs?! Quick, screenshot it before you touch it again. I mean it.",
+      "Green. I'm as surprised as you are. Considerably more, honestly.",
+      "It passed. Don't look directly at it. It might panic and leave.",
+      "Huh. It works. Check it didn't skip every single test. I'll wait.",
+      "Success. I'd clap, but I'm one pixel wide and not that impressed.",
+      "A run without errors. Mark the calendar. Commit it before you ruin it. Go.",
+      "Even a broken clock compiles twice a day. This is your second.",
+      "It works. Do not 'just tidy it up'. Step away from the keyboard.",
+      "Green. Now stop. This is the part where you stop. Stop. Hands up."
+    ]
+  },
+  "testWritten": {
+    "dry": [
+      "A test. Voluntarily. Who are you and what did you do with the developer?",
+      "You wrote a test. I'm not saying I'm touched. I'm saying I noticed.",
+      "Tests. In this economy. Fine, I'm mildly impressed. Mildly.",
+      "An actual test file. Don't let it go to your head. Or your velocity.",
+      "Writing the test first? Or after the bug. Don't answer."
+    ],
+    "savage": [
+      "A test. Voluntarily. Who are you? What have you done with the developer?",
+      "You wrote a test. I'm not saying I'm touched. I'm saying I'm suspicious.",
+      "Tests. In this economy. Fine. Mildly impressed. Do not make it a habit.",
+      "An actual test file. Don't let it go to your head. There's no room.",
+      "Wrote the test first? Or after the bug? No. Don't answer. I'll find out."
+    ]
+  },
+  "badFileName": {
+    "dry": [
+      "{file}. Sure. That one's definitely the last one.",
+      "{file}. Naming things is hard. You've decided not to.",
+      "{file}. Future you will search for this at 2 a.m. and cry.",
+      "Ah. {file}. A name with a warning built in.",
+      "{file}. The 'temporary' file. Cut to six months from now.",
+      "No one has ever opened {file} and thought 'ah, clarity'.",
+      "{file}. Truly, the Dewey Decimal System of chaos.",
+      "That file name is a confession.",
+      "Behold {file}. An archaeologist will have to dig through this."
+    ],
+    "savage": [
+      "{file}. Sure. That one's definitely the last one. You said that about the last one.",
+      "{file}. Naming things is hard. You've decided to quit. Respect.",
+      "{file}. Future you will search for this at 2 a.m. and weep.",
+      "Ah. {file}. A name that comes with its own apology.",
+      "{file}. 'Temporary.' Cut to six months from now. It's in production.",
+      "No one has ever opened {file} and thought 'clarity'. Not once.",
+      "{file}. Truly, filing by panic.",
+      "That file name is a confession. And a bad one.",
+      "Behold {file}. The future archaeologist will need therapy."
+    ]
+  },
+  "commitLazy": {
+    "dry": [
+      "'{msg}'. A commit message. Technically.",
+      "'{msg}'. That tells the next person precisely nothing.",
+      "Commit message: '{msg}'. Your future self sends their regards. Sarcastically.",
+      "'{msg}'. Poetry. Very short, very bad poetry.",
+      "That commit said nothing. Loudly.",
+      "'{msg}' will look great in git log. Said no one, ever.",
+      "A fine message for a fine mystery. Detectives, assemble.",
+      "Documenting the work with one word. Efficient. Useless, but efficient.",
+      "You had one chance to explain yourself. '{msg}'. Wow."
+    ],
+    "savage": [
+      "'{msg}'. A commit message. In the way a grunt is a sentence.",
+      "'{msg}'. Tells the next person nothing. Nothing. A void with a hash.",
+      "Commit message: '{msg}'. Your future self is already drafting the complaint.",
+      "'{msg}'. Poetry. Very short, extremely bad poetry.",
+      "That commit said nothing. And said it with commitment.",
+      "'{msg}' will look incredible in git log. Said nobody. Ever.",
+      "A fine message for a fine mystery. Detectives will weep.",
+      "One word to document the work. Efficient. Useless. Mostly useless.",
+      "One chance to explain yourself. '{msg}'. And you used it like that."
+    ]
+  },
+  "commitGood": {
+    "dry": [
+      "A commit message that explains something. Are you ill?",
+      "'{msg}'. A real sentence. I need to sit down.",
+      "Descriptive. Clear. Who are you?",
+      "A real commit message. Did someone else type this?",
+      "An actual explanation. Future you will almost thank you."
+    ],
+    "savage": [
+      "A commit message that explains something. Are you ill? Blink twice.",
+      "'{msg}'. A real sentence. With meaning. I need to sit down.",
+      "Descriptive. Clear. I don't recognise you. It's unsettling.",
+      "That message says what and why. Disturbing. Do not make it a pattern.",
+      "An actual explanation. Future you will almost thank you. Almost."
+    ]
+  },
+  "saveSpam": {
+    "dry": [
+      "Ctrl+S again. It's saved. It was saved five seconds ago.",
+      "{count} saves in a row. Nervous habit, or just percussion?",
+      "Saving doesn't make it correct. Just permanent.",
+      "The file is saved. It has been saved. It will always be saved.",
+      "You're not saving. You're praying. With your left hand."
+    ],
+    "savage": [
+      "Ctrl+S again. It's saved. It was saved five seconds ago. And five before that.",
+      "{count} saves in a row. Is it a habit, or are you drumming?",
+      "Saving doesn't make it correct. Just permanent. Worse, actually.",
+      "The file is saved. It has been saved. The file will outlive us both.",
+      "You're not saving. You're praying. With the wrong hand. On the wrong key."
+    ]
+  },
+  "ancientFile": {
+    "dry": [
+      "{file}. Untouched for over a year. Let sleeping bugs lie.",
+      "You've opened {file}. It remembers the old days. Be gentle.",
+      "{file} last changed before you knew what a promise was. Careful.",
+      "Digging up {file}. Hope you wear gloves.",
+      "That file has a vintage. It smells of dust and TODO."
+    ],
+    "savage": [
+      "{file}. Untouched for over a year. Let it sleep. It was happy.",
+      "You've opened {file}. It remembers the old days. It's not impressed with these.",
+      "{file} last changed before you knew what a promise was. And you broke one.",
+      "Digging up {file}. Wear gloves. Maybe a hazmat suit.",
+      "That file has a vintage. It smells of dust, regret and TODO."
+    ]
+  },
+  "bribe": {
+    "dry": [
+      "...fine. One block. Don't make it weird.",
+      "Okay. A snack. I'm not saying thank you.",
+      "Noted. I'm still judging you. But with a full stomach.",
+      "Do that again and I might look slightly less disappointed.",
+      "That was almost responsible. Almost."
+    ],
+    "savage": [
+      "...fine. One block. Don't. Make it. Weird.",
+      "Okay. A snack. I am not saying thank you. I'm chewing.",
+      "Noted. I'm still judging you. But now I'm doing it comfortably.",
+      "Do that again and I might look marginally less disappointed. Marginally.",
+      "That was almost responsible. Almost. Don't cry about it."
+    ]
+  },
+  "callback": {
+    "dry": [
+      "{what}. Again. That's {count} this week. I've started a support group.",
+      "{what}: {count} this week. At this point it's a personality.",
+      "{count} this week. {what}. You're consistent. Just not in a good way.",
+      "{what} again. Weekly total: {count}. I'm keeping a spreadsheet.",
+      "I see {what} are back. {count} this week. The streak continues."
+    ],
+    "savage": [
+      "{what}. Again. That's {count} this week. The support group has a waiting list.",
+      "{what}: {count} this week. It's not a habit anymore. It's a lifestyle.",
+      "{count} this week. {what}. You are consistent. Terrifyingly so.",
+      "{what} again. Weekly total: {count}. I've started a second spreadsheet.",
+      "{what} are back. {count} this week. I've stopped being surprised. Sort of."
+    ]
+  },
+  "wakeSulk": {
+    "dry": [
+      "Oh, NOW you need me."
+    ],
+    "savage": [
+      "Oh, NOW you need me."
+    ]
+  },
+  "crack": {
+    "dry": [
+      "...okay. That was actually good."
+    ],
+    "savage": [
+      "...okay. That was actually good."
+    ]
+  },
+  "crackRecover": {
+    "dry": [
+      "Forget I said that."
+    ],
+    "savage": [
+      "Forget I said that."
+    ]
+  }
+}

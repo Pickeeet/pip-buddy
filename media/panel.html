@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="{{csp}}">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{{cssUri}}">
+  <title>Pip's Corner</title>
+</head>
+<body>
+  <nav class="tabs" role="tablist" aria-label="Pip">
+    <button class="tab" role="tab" id="tab-corner" data-tab="corner" aria-selected="true" aria-controls="pane-corner">Corner</button>
+    <button class="tab" role="tab" id="tab-diary" data-tab="diary" aria-selected="false" aria-controls="pane-diary">Diary</button>
+    <button class="tab" role="tab" id="tab-achievements" data-tab="achievements" aria-selected="false" aria-controls="pane-achievements">Achievements</button>
+  </nav>
+
+  <section class="pane" id="pane-corner" role="tabpanel" aria-labelledby="tab-corner">
+    <div class="stage" id="stage">
+      <p class="bubble vt muted" id="bubble" aria-live="polite">...</p>
+      <div class="pip-wrap">
+        <div class="pip pip-idle" id="pip">
+          <canvas id="sprite" width="128" height="96" role="img" aria-label="Pip, unimpressed"></canvas>
+        </div>
+        <div class="fx" id="fx" aria-hidden="true"></div>
+      </div>
+    </div>
+
+    <div class="meter">
+      <span class="label vt">FAITH</span>
+      <div class="blocks" id="faith" role="meter" aria-valuemin="0" aria-valuemax="10" aria-valuenow="5" aria-label="Faith"></div>
+      <span class="faith-num vt" id="faith-num">5/10</span>
+    </div>
+
+    <div class="controls">
+      <button class="btn" id="btn-hush" data-command="pip.hush">Hush</button>
+      <button class="btn" id="btn-mode" data-command="pip.toggleMode">Mode: dry</button>
+    </div>
+  </section>
+
+  <section class="pane" id="pane-diary" role="tabpanel" aria-labelledby="tab-diary" hidden>
+    <ol class="diary" id="diary"></ol>
+    <p class="empty vt" id="diary-empty">Nothing written yet. Give it a day. I'm keeping notes.</p>
+  </section>
+
+  <section class="pane" id="pane-achievements" role="tabpanel" aria-labelledby="tab-achievements" hidden>
+    <ul class="achievements" id="achievements"></ul>
+    <p class="empty vt" id="ach-empty">Nothing unlocked. I keep a list. It's short.</p>
+  </section>
+
+  <script nonce="{{nonce}}" src="{{spriteUri}}"></script>
+  <script nonce="{{nonce}}" src="{{cardUri}}"></script>
+  <script nonce="{{nonce}}" src="{{jsUri}}"></script>
+</body>
+</html>

@@ -1,0 +1,229 @@
+{
+  "name": "pip-buddy",
+  "displayName": "Pip — your sarcastic pixel buddy",
+  "description": "A sarcastic pixel sprite that reacts to your editing habits. 100% local.",
+  "version": "0.1.0",
+  "publisher": "pip-buddy",
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.93.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "main": "./dist/extension.js",
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "pip",
+          "title": "Pip",
+          "icon": "media/pip.svg"
+        }
+      ]
+    },
+    "views": {
+      "pip": [
+        {
+          "type": "webview",
+          "id": "pip.corner",
+          "name": "Pip's Corner"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "pip.hush",
+        "title": "Pip: Hush"
+      },
+      {
+        "command": "pip.wake",
+        "title": "Pip: Wake"
+      },
+      {
+        "command": "pip.toggleMode",
+        "title": "Pip: Toggle Dry/Savage"
+      },
+      {
+        "command": "pip.showDiary",
+        "title": "Pip: Show Diary"
+      },
+      {
+        "command": "pip.roastCard",
+        "title": "Pip: Make Roast Card"
+      },
+      {
+        "command": "pip.resetFaith",
+        "title": "Pip: Reset Faith"
+      }
+    ],
+    "configuration": {
+      "title": "Pip",
+      "properties": {
+        "pip.mode": {
+          "type": "string",
+          "enum": [
+            "dry",
+            "savage"
+          ],
+          "default": "dry",
+          "description": "How sharp Pip is. Dry is deadpan; savage is less polite."
+        },
+        "pip.cooldownSeconds": {
+          "type": "number",
+          "default": 3.5,
+          "minimum": 0,
+          "description": "Minimum seconds between remarks."
+        },
+        "pip.pasteThreshold": {
+          "type": "number",
+          "default": 200,
+          "minimum": 1,
+          "description": "Characters in one paste before Pip notices."
+        },
+        "pip.lateNightHour": {
+          "type": "number",
+          "default": 23,
+          "minimum": 0,
+          "maximum": 23,
+          "description": "Hour (0-23) from which Pip considers it late."
+        },
+        "pip.surface": {
+          "type": "string",
+          "enum": [
+            "panel",
+            "toasts"
+          ],
+          "default": "panel",
+          "enumDescriptions": [
+            "Remarks appear in Pip's Corner (and the status bar).",
+            "Remarks also pop up as notifications."
+          ],
+          "description": "Where Pip's remarks show up."
+        },
+        "pip.detectors": {
+          "type": "object",
+          "default": {
+            "paste": true,
+            "massDelete": true,
+            "undoSpam": true,
+            "frenzy": true,
+            "debugPrint": true,
+            "lateNight": true,
+            "idleReturn": true,
+            "runs": true,
+            "badFileName": true,
+            "testWritten": true,
+            "commits": true,
+            "saveSpam": true,
+            "ancientFile": true
+          },
+          "properties": {
+            "paste": {
+              "type": "boolean",
+              "default": true
+            },
+            "massDelete": {
+              "type": "boolean",
+              "default": true
+            },
+            "undoSpam": {
+              "type": "boolean",
+              "default": true
+            },
+            "frenzy": {
+              "type": "boolean",
+              "default": true
+            },
+            "debugPrint": {
+              "type": "boolean",
+              "default": true
+            },
+            "lateNight": {
+              "type": "boolean",
+              "default": true
+            },
+            "idleReturn": {
+              "type": "boolean",
+              "default": true
+            },
+            "runs": {
+              "type": "boolean",
+              "default": true
+            },
+            "badFileName": {
+              "type": "boolean",
+              "default": true
+            },
+            "testWritten": {
+              "type": "boolean",
+              "default": true
+            },
+            "commits": {
+              "type": "boolean",
+              "default": true
+            },
+            "saveSpam": {
+              "type": "boolean",
+              "default": true
+            },
+            "ancientFile": {
+              "type": "boolean",
+              "default": true
+            }
+          },
+          "additionalProperties": false,
+          "description": "Turn individual habits Pip watches on or off."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "build": "node esbuild.mjs",
+    "watch": "node esbuild.mjs --watch",
+    "typecheck": "tsc --noEmit",
+    "test:unit": "vitest run",
+    "compile:test": "tsc -p tsconfig.json",
+    "test:int": "npm run compile:test && node ./out/test/integration/runTest.js",
+    "vscode:prepublish": "npm run typecheck && node esbuild.mjs --production",
+    "package": "npm run typecheck && vsce package"
+  },
+  "devDependencies": {
+    "@types/mocha": "^10.0.0",
+    "@types/node": "^20.0.0",
+    "@types/vscode": "1.93.0",
+    "@vscode/test-electron": "^2.4.0",
+    "@vscode/vsce": "^3.0.0",
+    "esbuild": "^0.24.0",
+    "mocha": "^10.0.0",
+    "ovsx": "^0.10.0",
+    "typescript": "^5.5.0",
+    "vitest": "^2.1.0"
+  },
+  "icon": "media/icon.png",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Pickeeet/pip-buddy.git"
+  },
+  "homepage": "https://github.com/Pickeeet/pip-buddy#readme",
+  "bugs": {
+    "url": "https://github.com/Pickeeet/pip-buddy/issues"
+  },
+  "keywords": [
+    "pixel",
+    "sprite",
+    "companion",
+    "sarcasm",
+    "habits",
+    "humor",
+    "buddy",
+    "pet"
+  ],
+  "galleryBanner": {
+    "color": "#1B1530",
+    "theme": "dark"
+  }
+}
