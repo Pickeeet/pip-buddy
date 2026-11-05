@@ -36,7 +36,9 @@ export class Brain {
       return null;
     }
     if (e.type === 'wake') {
+      const wasHushed = s.hushed;
       s.hushed = false;
+      if (!wasHushed) return null;
       const line = this.pickLine('wakeSulk', e);
       return line ? this.say(line, 'UNIMPRESSED', '', 'line', e) : null;
     }

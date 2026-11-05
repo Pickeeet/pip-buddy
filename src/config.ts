@@ -1,12 +1,13 @@
 import * as vscode from 'vscode';
 import type { Mode } from './types';
+import { coerceSurface, type Surface } from './surface';
 
 export interface PipConfig {
   mode: Mode;
   cooldownSeconds: number;
   pasteThreshold: number;
   lateNightHour: number;
-  surface: 'panel' | 'statusbar' | 'toasts';
+  surface: Surface;
   detectors: Record<string, boolean>;
 }
 
@@ -21,13 +22,12 @@ export function readConfig(): PipConfig {
   const detectors: Record<string, boolean> = {};
   for (const k of DETECTOR_KEYS) detectors[k] = user?.[k] !== false;
   const mode = c.get<string>('mode', 'dry');
-  const surface = c.get<string>('surface', 'panel');
   return {
     mode: mode === 'savage' ? 'savage' : 'dry',
     cooldownSeconds: c.get<number>('cooldownSeconds', 3.5),
     pasteThreshold: c.get<number>('pasteThreshold', 200),
     lateNightHour: c.get<number>('lateNightHour', 23),
-    surface: surface === 'statusbar' || surface === 'toasts' ? surface : 'panel',
+    surface: coerceSurface(c.get<string>('surface', 'panel')),
     detectors,
   };
 }

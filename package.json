@@ -95,13 +95,11 @@
           "type": "string",
           "enum": [
             "panel",
-            "statusbar",
             "toasts"
           ],
           "default": "panel",
           "enumDescriptions": [
             "Remarks appear in Pip's Corner (and the status bar).",
-            "Remarks appear in the status bar.",
             "Remarks also pop up as notifications."
           ],
           "description": "Where Pip's remarks show up."

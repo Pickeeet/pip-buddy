@@ -24,6 +24,26 @@
     return lines;
   }
 
+  /**
+   * Quote lines for the diary: up to `maxLines`. When the text does not fit, the last kept line ends
+   * with an ellipsis, and the closing quote mark is always present.
+   */
+  function quoteLines(g, body, maxWidth, maxLines) {
+    var OPEN = String.fromCharCode(0x201c);
+    var CLOSE = String.fromCharCode(0x201d);
+    var ELLIPSIS = String.fromCharCode(0x2026);
+    var full = wrap(g, OPEN + body + CLOSE, maxWidth);
+    if (full.length <= maxLines) return full;
+    var kept = wrap(g, OPEN + body, maxWidth).slice(0, maxLines);
+    var trim = function (t) { return t.replace(/[ .,;:!?-]+$/, ''); };
+    var last = trim(kept[maxLines - 1]);
+    while (last.indexOf(' ') > 0 && g.measureText(last + ELLIPSIS + CLOSE).width > maxWidth) {
+      last = trim(last.slice(0, last.lastIndexOf(' ')));
+    }
+    kept[maxLines - 1] = last + ELLIPSIS + CLOSE;
+    return kept;
+  }
+
   function drawSprite(g, grid, x, y, cell) {
     for (var r = 0; r < grid.length; r++) {
       for (var c = 0; c < grid[r].length; c++) {
@@ -102,7 +122,7 @@
     if (card.diaryLine) {
       g.fillStyle = TEXT;
       g.font = 'italic 22px ' + MONO;
-      wrap(g, '\u201c' + card.diaryLine.replace(/^Day \d+\.\s*/, '') + '\u201d', W - PAD * 2).slice(0, 2).forEach(function (ln) {
+      quoteLines(g, card.diaryLine.replace(/^Day \d+\.\s*/, ''), W - PAD * 2, 3).forEach(function (ln) {
         g.fillText(ln, PAD, y);
         y += 30;
       });
@@ -133,5 +153,5 @@
       .then(function () { return draw(card).toDataURL('image/png'); });
   }
 
-  root.PipCard = { render: render };
+  root.PipCard = { render: render, quoteLines: quoteLines };
 })(typeof globalThis !== 'undefined' ? globalThis : this);

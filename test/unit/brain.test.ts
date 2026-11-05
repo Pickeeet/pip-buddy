@@ -36,6 +36,12 @@ describe('Brain', () => {
     expect(r?.mood).toBe('UNIMPRESSED');
     expect(b.state.hushed).toBe(false);
   });
+  it('wake when not hushed stays silent but still records', () => {
+    const b = mk();
+    expect(b.handle(ev('wake', T0))).toBeNull();
+    expect(b.state.hushed).toBe(false);
+    expect(b.state.days[Object.keys(b.state.days)[0]].counts.wake).toBe(1);
+  });
   it('the crack: fires once per 7 days after a long fail streak', () => {
     const b = mk();
     const r = failsThenPass(b, T0);
