@@ -1,4 +1,6 @@
-const BAD_TOKEN = /^(final|v\d+|real|copy|temp\d*|new\d*|old)$/i;
+const BAD_ANYWHERE = /^(final|v\d+|real|copy|temp\d*|new\d+)$/i;
+// Bare new/old are ordinary prefixes (newFile, oldConfig): cursed only as the last word (cartNew, cart-old).
+const BAD_LAST = /^(new|old)$/i;
 const DAY_MS = 864e5;
 export const ANCIENT_DAYS = 365;
 
@@ -13,7 +15,7 @@ function stem(basename: string): string {
  */
 export function isBadFileName(basename: string): boolean {
   const words = stem(basename).replace(/([a-z0-9])([A-Z])/g, '$1 $2').split(/[_\-. ]+/);
-  return words.some((w) => BAD_TOKEN.test(w));
+  return words.some((w, i) => BAD_ANYWHERE.test(w) || (i === words.length - 1 && BAD_LAST.test(w)));
 }
 
 /** *.test.*, *.spec.*, *_test.*, test_*.py */

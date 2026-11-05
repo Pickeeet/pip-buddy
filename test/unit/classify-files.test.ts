@@ -15,12 +15,13 @@ describe('isBadFileName', () => {
     expect(isBadFileName('')).toBe(false);
   });
   it('needs a word start: ordinary words containing cursed ones are fine', () => {
-    for (const n of ['threshold.ts', 'gold.ts', 'scaffold.ts', 'renew.ts', 'unreal.ts', 'newsletter.ts', 'cart.ts']) {
+    for (const n of ['threshold.ts', 'gold.ts', 'scaffold.ts', 'renew.ts', 'unreal.ts', 'newsletter.ts', 'cart.ts',
+      'newFile.ts', 'newUser.ts', 'newData.ts', 'oldConfig.ts', 'oldValues.ts']) {
       expect(isBadFileName(n)).toBe(false);
     }
   });
   it('matches at word starts incl. separators and camelCase', () => {
-    for (const n of ['utils_final_v3_REAL.ts', 'cart-old.ts', 'cartCopy.ts', 'temp2.ts', 'new1.ts', 'report final.ts', 'utilsFinal.ts']) {
+    for (const n of ['utils_final_v3_REAL.ts', 'cart-old.ts', 'cartCopy.ts', 'temp2.ts', 'new1.ts', 'report final.ts', 'utilsFinal.ts', 'cartNew.ts', 'cart_new.ts']) {
       expect(isBadFileName(n)).toBe(true);
     }
   });
