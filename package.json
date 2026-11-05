@@ -3,7 +3,7 @@
   "displayName": "Pip — your sarcastic pixel buddy",
   "description": "A sarcastic pixel sprite that reacts to your editing habits. 100% local.",
   "version": "0.1.0",
-  "publisher": "pip-buddy-dev",
+  "publisher": "pip-buddy",
   "license": "MIT",
   "engines": {
     "vscode": "^1.93.0"
@@ -206,7 +206,11 @@
   "icon": "media/icon.png",
   "repository": {
     "type": "git",
-    "url": "https://github.com/pip-buddy-dev/pip-buddy.git"
+    "url": "https://github.com/Pickeeet/pip-buddy.git"
+  },
+  "homepage": "https://github.com/Pickeeet/pip-buddy#readme",
+  "bugs": {
+    "url": "https://github.com/Pickeeet/pip-buddy/issues"
   },
   "keywords": [
     "pixel",

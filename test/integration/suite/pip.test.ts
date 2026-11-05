@@ -21,7 +21,7 @@ async function until(what: string, cond: () => boolean): Promise<void> {
 }
 
 async function api(): Promise<TestApi> {
-  const ext = vscode.extensions.getExtension('pip-buddy-dev.pip-buddy');
+  const ext = vscode.extensions.getExtension('pip-buddy.pip-buddy');
   assert.ok(ext, 'extension not found');
   const a = (await ext.activate()) as TestApi | undefined; // activate() returns __testApi()
   assert.ok(a, 'test api unavailable (PIP_TEST=1 set?)');
