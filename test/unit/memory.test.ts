@@ -93,3 +93,24 @@ describe('callbackFor', () => {
     expect(callbackFor(s, ev('wake', NOON), NOON, lines, 'dry', rng)).toBeNull();
   });
 });
+
+describe('record across midnight', () => {
+  it('seeds a new day from the previous day’s open fail streak', () => {
+    const s = mkState();
+    const late = new Date(2026, 5, 10, 23, 55).getTime();
+    record(s, ev('runFail', late));
+    record(s, ev('runFail', late + 60_000));
+    const after = new Date(2026, 5, 11, 0, 7).getTime();
+    const d = record(s, ev('runFail', after));
+    expect(d.failStreak).toBe(3);
+    expect(d.failStreakStart).toBe(late);
+  });
+  it('does not seed from a closed streak', () => {
+    const s = mkState();
+    const late = new Date(2026, 5, 10, 23, 55).getTime();
+    record(s, ev('runFail', late));
+    record(s, ev('runPass', late + 1000));
+    const d = record(s, ev('runFail', new Date(2026, 5, 11, 0, 7).getTime()));
+    expect(d.failStreak).toBe(1);
+  });
+});

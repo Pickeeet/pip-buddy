@@ -21,12 +21,25 @@ function dateBack(at: number, back: number): string {
   return localDate(d.getTime());
 }
 
+/** The fail streak in progress as of `at`: today's, or the most recent earlier day's if still open. */
+export function openStreak(state: PipState, at: number): { len: number; start: number } {
+  const key = localDate(at);
+  const today = state.days[key];
+  if (today) return { len: today.failStreak, start: today.failStreakStart };
+  const prev = Object.keys(state.days).filter((k) => k < key).sort().pop();
+  const d = prev === undefined ? undefined : state.days[prev];
+  return d && d.failStreak > 0 ? { len: d.failStreak, start: d.failStreakStart } : { len: 0, start: 0 };
+}
+
 /** Mutates and returns today's stats for the event; prunes days older than 28. */
 export function record(state: PipState, e: PipEvent): DayStats {
   const key = localDate(e.at);
   let day = state.days[key];
   if (!day) {
+    const streak = openStreak(state, e.at);
     day = emptyDay();
+    day.failStreak = streak.len;
+    day.failStreakStart = streak.start;
     day.faithMin = state.faith;
     day.faithMax = state.faith;
     state.days[key] = day;
