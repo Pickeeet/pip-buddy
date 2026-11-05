@@ -167,6 +167,11 @@
     if (!m || typeof m !== 'object') return;
     if (m.kind === 'state') render(m);
     else if (m.kind === 'showTab') showTab(m.tab);
+    else if (m.kind === 'renderCard') {
+      PipCard.render(m.card).then(function (dataUrl) {
+        vscode.postMessage({ kind: 'cardPng', dataUrl: dataUrl });
+      });
+    }
   });
 
   setFaith(5);

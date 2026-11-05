@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
 import { readFileSync } from 'node:fs';
 import type { FromWebview, StateMessage, ToWebview } from './messages';
+import type { RoastCardData } from '../brain/roastCard';
 
 const ALLOWED_COMMANDS = new Set(['pip.hush', 'pip.wake', 'pip.toggleMode', 'pip.roastCard', 'pip.resetFaith']);
 
@@ -19,7 +20,7 @@ export class PipPanel implements vscode.WebviewViewProvider {
   private latest: StateMessage | undefined;
   private pendingTab: Extract<ToWebview, { kind: 'showTab' }>['tab'] | undefined;
 
-  constructor(private readonly extensionUri: vscode.Uri, private readonly onCardPng: (dataUrl: string) => void = () => {}) {}
+  constructor(private readonly extensionUri: vscode.Uri, private readonly onCardPng: (dataUrl: string) => void = () => {}, private readonly onShown: () => void = () => {}) {}
 
   resolveWebviewView(view: vscode.WebviewView): void {
     this.view = view;
@@ -30,8 +31,11 @@ export class PipPanel implements vscode.WebviewViewProvider {
 
     view.webview.onDidReceiveMessage((m: FromWebview) => this.receive(m));
     view.onDidChangeVisibility(() => {
-      if (view.visible && this.ready && this.latest) void view.webview.postMessage(this.latest);
+      // A hidden webview loses its content; its script says `ready` again when shown.
+      if (!view.visible) { this.ready = false; return; }
+      this.onShown();
     });
+    this.onShown();
     view.onDidDispose(() => {
       if (this.view === view) { this.view = undefined; this.ready = false; }
     });
@@ -46,6 +50,23 @@ export class PipPanel implements vscode.WebviewViewProvider {
     if (this.view && this.ready) this.post({ kind: 'showTab', tab });
     else this.pendingTab = tab;
   }
+
+  /** True once the webview has been resolved and has said `ready`. */
+  isReady(): boolean { return this.view !== undefined && this.ready; }
+
+  /** Resolves true when the webview is ready, false after `timeoutMs`. */
+  whenReady(timeoutMs: number): Promise<boolean> {
+    if (this.isReady()) return Promise.resolve(true);
+    return new Promise((resolve) => {
+      const started = Date.now();
+      const poll = setInterval(() => {
+        if (this.isReady()) { clearInterval(poll); resolve(true); }
+        else if (Date.now() - started >= timeoutMs) { clearInterval(poll); resolve(false); }
+      }, 100);
+    });
+  }
+
+  renderCard(card: RoastCardData): void { this.post({ kind: 'renderCard', card }); }
 
   private post(m: ToWebview): void {
     if (this.view && this.ready) void this.view.webview.postMessage(m);
@@ -74,6 +95,7 @@ export class PipPanel implements vscode.WebviewViewProvider {
       .replace(/\{\{nonce\}\}/g, n)
       .replace(/\{\{cssUri\}\}/g, uri('panel.css'))
       .replace(/\{\{spriteUri\}\}/g, uri('sprite.js'))
+      .replace(/\{\{cardUri\}\}/g, uri('card.js'))
       .replace(/\{\{jsUri\}\}/g, uri('panel.js'));
   }
 }

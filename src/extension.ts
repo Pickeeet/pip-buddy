@@ -11,7 +11,9 @@ import { registerFileDetectors } from './detectors/files';
 import { registerGitDetectors } from './detectors/git';
 import { registerRunDetectors } from './detectors/runs';
 import linesJson from './lines/lines.json';
+import { isoWeek, shouldOfferCard } from './brain/isoWeek';
 import { PipPanel } from './ui/panel';
+import { handleCardPng, makeRoastCard } from './ui/roastCard';
 import { PipStatusBar } from './ui/statusBar';
 import type { StateMessage } from './ui/messages';
 import type { Fx, LinePack, Mode, Mood, PipEvent, PipState } from './types';
@@ -45,7 +47,16 @@ export function activate(ctx: vscode.ExtensionContext): void {
   let line: string | null = null;
   let moodTimer: ReturnType<typeof setTimeout> | undefined;
 
-  const panel = new PipPanel(ctx.extensionUri);
+  const CARD_OFFER_KEY = 'pip.lastCardOffer';
+  const offerCard = (): void => {
+    const now = Date.now();
+    if (!shouldOfferCard(now, kv.get<string>(CARD_OFFER_KEY))) return;
+    void kv.update(CARD_OFFER_KEY, isoWeek(now));
+    void vscode.window.showInformationMessage('Pip has your weekly roast ready. It has notes.', 'Make Roast Card').then((pick) => {
+      if (pick) void vscode.commands.executeCommand('pip.roastCard');
+    });
+  };
+  const panel = new PipPanel(ctx.extensionUri, handleCardPng, offerCard);
   const statusBar = new PipStatusBar();
   ctx.subscriptions.push(vscode.window.registerWebviewViewProvider(PipPanel.viewId, panel), statusBar);
 
@@ -134,9 +145,7 @@ export function activate(ctx: vscode.ExtensionContext): void {
       await vscode.commands.executeCommand('pip.corner.focus');
       panel.showTab('diary');
     }),
-    vscode.commands.registerCommand('pip.roastCard', () => {
-      void vscode.window.showInformationMessage('Roast Card arrives Friday.');
-    }),
+    vscode.commands.registerCommand('pip.roastCard', () => makeRoastCard(panel, state)),
     vscode.commands.registerCommand('pip.resetFaith', () => {
       state.faith = 5;
       changed();
