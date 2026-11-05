@@ -52,8 +52,8 @@ suite('Pip integration', () => {
   });
 
   test('deleting 200 chars counts as massDelete', async () => {
-    const editor = vscode.window.activeTextEditor;
-    assert.ok(editor);
+    const doc = await vscode.workspace.openTextDocument({ content: 'z'.repeat(300), language: 'plaintext' });
+    const editor = await vscode.window.showTextDocument(doc);
     const before = count('massDelete');
     await editor.edit((b) => b.delete(new vscode.Range(0, 0, 0, 200)));
     await until('massDelete counted', () => count('massDelete') === before + 1);
@@ -100,10 +100,15 @@ suite('Pip integration', () => {
   test('a format-like edit to a non-active document emits nothing', async () => {
     const active = await vscode.workspace.openTextDocument({ content: 'active', language: 'plaintext' });
     await vscode.window.showTextDocument(active);
-    const other = await vscode.workspace.openTextDocument({ content: 'a  =  1\n', language: 'plaintext' });
+    // The other document holds 300 chars; the edit replaces 250 of them with 300 chars that equal the
+    // clipboard and deletes 40 more, so both paste and massDelete would fire if the active-document guard were missing.
+    const other = await vscode.workspace.openTextDocument({ content: 'a'.repeat(300), language: 'plaintext' });
+    const inserted = 'y'.repeat(300);
+    await vscode.env.clipboard.writeText(inserted);
     const mark = seen.length;
     const we = new vscode.WorkspaceEdit();
-    we.replace(other.uri, new vscode.Range(0, 0, 0, 7), 'y'.repeat(300));
+    we.replace(other.uri, new vscode.Range(0, 0, 0, 250), inserted);
+    we.delete(other.uri, new vscode.Range(0, 260, 0, 300));
     assert.ok(await vscode.workspace.applyEdit(we));
     // Negative assertion: nothing to poll for, so give the event pipeline a bounded grace period.
     await new Promise((r) => setTimeout(r, 600));
