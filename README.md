@@ -2,16 +2,11 @@
 
 Pip is a 16×12 pixel sprite who lives in your sidebar and is deeply unimpressed by your coding habits.
 
-<!-- GIF 1: Pip reacting to a giant paste (record and drop in media/gifs/paste.gif) -->
+<!-- GIFs go here before publishing (record into media/gifs/ and uncomment):
 ![Pip noticing a paste](media/gifs/paste.gif)
-
-<!-- GIF 2: the Faith Meter dropping after a failed run streak -->
 ![Pip's faith in you, going down](media/gifs/faith.gif)
-
-<!-- GIF 3: the weekly Roast Card -->
 ![A Roast Card](media/gifs/roast-card.gif)
-
-*(GIFs are placeholders. Pip declined to pose.)*
+-->
 
 ## What Pip notices
 
@@ -26,7 +21,7 @@ Pip judges habits, never people. It has opinions about what you did, not who you
 | `console.log` / `print` | Debug prints appearing, and how many. |
 | Late night | Editing after 23:00 (configurable). After midnight Pip wears a night cap. |
 | Coming back | You return after 15 seconds of silence. |
-| Failed runs | A task or terminal command exits non-zero, and keeps doing it. |
+| Failed runs | A task, or a build/test/run command in the terminal (`npm`, `pytest`, `cargo`...), exits non-zero, and keeps doing it. `cd`, `ls` and `git` are not runs. |
 | Passing runs | A run finally passes. Pip is surprised. |
 | Tests | You save a test file. Pip does not trust it, but notes it. |
 | Cursed file names | `utils_final_v3_REAL.ts` and its relatives. |
@@ -38,9 +33,9 @@ Every habit can be switched off individually in `pip.detectors`.
 
 ## Privacy
 
-**100% local: no network calls, no telemetry; Pip stores counts, file names and commit subjects — never your code.**
+**Pip reads your edits and clipboard momentarily to classify them, and stores only counts, file names and commit subjects — never your code. No network calls, no telemetry.**
 
-Everything lives in VS Code's own extension storage on your machine. Pip never reads your files' contents into its memory, and nothing leaves your computer. Fonts are bundled, so even the webview makes no requests.
+Everything lives in VS Code's own extension storage on your machine. Your code is never stored, and nothing leaves your computer. Fonts are bundled, so even the webview makes no requests.
 
 ## Commands
 
@@ -61,7 +56,7 @@ Everything lives in VS Code's own extension storage on your machine. Pip never r
 | `pip.cooldownSeconds` | `3.5` | Minimum seconds between remarks. |
 | `pip.pasteThreshold` | `200` | Characters in one paste before Pip notices. |
 | `pip.lateNightHour` | `23` | Hour (0-23) from which Pip considers it late. |
-| `pip.surface` | `panel` | `panel`, `statusbar`, or `toasts` (remarks also pop up as notifications). |
+| `pip.surface` | `panel` | `panel` or `toasts` (remarks also pop up as notifications). |
 | `pip.detectors` | all on | Per-habit on/off switches. |
 
 ## Meet Pip's memory
@@ -75,14 +70,6 @@ Pip remembers, and it is not discreet about it.
 - **The Crack.** After a long, miserable streak of failures, a pass may get a reaction you don't see from Pip any other day. It happens rarely. You will know.
 
 Pip's Faith Meter runs from 0 to 10 and starts at 5. You can see it in Pip's Corner.
-
-## Publishing notes (for the maintainer)
-
-- `publisher` in `package.json` is the placeholder `pip-buddy-dev`. Replace it with your real publisher id (and the repository URL) before publishing.
-- Check the extension name is free on the Marketplace and Open VSX; if not, rename (for example `pixel-buddy`).
-- `npm run build && npx vsce package` produces `pip-buddy-0.1.0.vsix`. Publishing (`vsce publish`, `ovsx publish`) is done with your own tokens.
-- Tests: `npm run test:unit`, and `npm run test:int` (downloads an official VS Code test build once).
-- `scripts/icon.mjs` regenerates `media/icon.png` from the sprite.
 
 ## Licence
 
