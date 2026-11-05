@@ -29,6 +29,18 @@ export function countDebugPrints(text: string): number {
   return text.match(DEBUG_PRINT)?.length ?? 0;
 }
 
+/** Inserted text longer than this is a formatter or bulk replace, never a typed debug print. */
+export const DEBUG_SCAN_MAX_CHARS = 500;
+
+/** Debug prints added by an event; skips large insertions to keep work bounded. */
+export function countDebugPrintsInChanges(changes: Change[]): number {
+  let n = 0;
+  for (const c of changes) {
+    if (c.text.length <= DEBUG_SCAN_MAX_CHARS) n += countDebugPrints(c.text);
+  }
+  return n;
+}
+
 /** True once when the nth hit lands within `ms` of the first hit in the window, then resets. */
 export class RateWindow {
   private hits: number[] = [];
@@ -57,9 +69,14 @@ export class IdleTracker {
   }
 }
 
-/** True in the late-night window (from `hour` until 05:00) if it has not already fired today. */
+/** One key per night: 23:47 and 00:10 of the same night share it (the night ends at 05:00). */
+export function nightKey(at: number): string {
+  return localDate(at - NIGHT_END_HOUR * 3600_000);
+}
+
+/** True in the late-night window (from `hour` until 05:00) if it has not already fired this night. */
 export function lateNightOnce(at: number, lastFired: string | null, hour: number): boolean {
   const h = localHour(at);
   const night = h >= hour || h < NIGHT_END_HOUR;
-  return night && lastFired !== localDate(at);
+  return night && lastFired !== nightKey(at);
 }

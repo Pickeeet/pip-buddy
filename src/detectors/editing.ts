@@ -4,7 +4,7 @@ import type { PipConfig } from '../config';
 import type { PipEventType } from '../types';
 import { localDate } from '../brain/time';
 import {
-  classifyChanges, countDebugPrints, IdleTracker, lateNightOnce, MAX_CHANGES, RateWindow,
+  classifyChanges, countDebugPrintsInChanges, IdleTracker, lateNightOnce, MAX_CHANGES, nightKey, RateWindow,
 } from './classify/editing';
 
 const pad = (n: number): string => String(n).padStart(2, '0');
@@ -39,7 +39,7 @@ export function registerEditingDetectors(
     if (idle.touch(at) && on(c, 'idleReturn')) emit('idleReturn', at);
 
     if (on(c, 'lateNight') && lateNightOnce(at, lateFired, c.lateNightHour)) {
-      lateFired = localDate(at);
+      lateFired = nightKey(at);
       const d = new Date(at);
       emit('lateNight', at, { time: `${pad(d.getHours())}:${pad(d.getMinutes())}` });
     }
@@ -48,8 +48,7 @@ export function registerEditingDetectors(
     if (isUndo && on(c, 'undoSpam') && undos.hit(at)) emit('undoSpam', at, { count: 5 });
 
     if (on(c, 'debugPrint')) {
-      let added = 0;
-      for (const ch of plain) added += countDebugPrints(ch.text);
+      const added = countDebugPrintsInChanges(plain);
       if (added > 0) {
         const day = localDate(at);
         if (day !== printDay) { printDay = day; printCount = 0; }

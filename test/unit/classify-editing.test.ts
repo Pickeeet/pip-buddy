@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import {
-  classifyChanges, countDebugPrints, RateWindow, IdleTracker, lateNightOnce,
+  classifyChanges, countDebugPrints, countDebugPrintsInChanges, nightKey, RateWindow, IdleTracker, lateNightOnce,
 } from '../../src/detectors/classify/editing';
 import { localDate } from '../../src/brain/time';
 
@@ -91,7 +91,33 @@ describe('lateNightOnce', () => {
   it('does not fire in daytime', () => {
     expect(lateNightOnce(new Date(2026, 10, 5, 14).getTime(), null, 23)).toBe(false);
   });
-  it('fires after midnight before 05:00', () => {
-    expect(lateNightOnce(new Date(2026, 10, 6, 1, 10).getTime(), today, 23)).toBe(true);
+  it('does not fire again after midnight in the same night', () => {
+    const after = new Date(2026, 10, 6, 0, 10).getTime();
+    expect(nightKey(after)).toBe(nightKey(at));
+    expect(lateNightOnce(after, nightKey(at), 23)).toBe(false);
+  });
+  it('fires after midnight when last fired on the previous night', () => {
+    const after = new Date(2026, 10, 6, 1, 10).getTime();
+    expect(lateNightOnce(after, nightKey(new Date(2026, 10, 4, 23, 30).getTime()), 23)).toBe(true);
+  });
+  it('23:47 then 00:10 same night fires only the first', () => {
+    let last: string | null = null;
+    const fired: boolean[] = [];
+    for (const t of [at, new Date(2026, 10, 6, 0, 10).getTime()]) {
+      const f = lateNightOnce(t, last, 23);
+      fired.push(f);
+      if (f) last = nightKey(t);
+    }
+    expect(fired).toEqual([true, false]);
+  });
+});
+
+describe('countDebugPrintsInChanges', () => {
+  it('counts small insertions', () => {
+    expect(countDebugPrintsInChanges([{ text: 'console.log(x)', rangeLength: 0 }])).toBe(1);
+  });
+  it('ignores a 5000-char insertion containing console.log(', () => {
+    const text = 'console.log(a); ' + 'y'.repeat(5000);
+    expect(countDebugPrintsInChanges([{ text, rangeLength: 0 }])).toBe(0);
   });
 });
