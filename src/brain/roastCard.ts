@@ -1,0 +1,1 @@
+export interface RoastCardData { weekOf: string; topOffences: { label: string; count: number }[]; faithStart: number; faithEnd: number; diaryLine: string | null; achievement: string | null; cracked: boolean; dayCount: number }

@@ -1,0 +1,145 @@
+/* Pip's Corner. Palette and keyframes ported from the original mockup (steps() animation throughout). */
+
+/* Drop the font files listed in fonts/README.md here; until then the stacks fall back to monospace. */
+@font-face { font-family: 'VT323'; src: url('fonts/VT323-Regular.woff2') format('woff2'); font-display: swap; }
+@font-face { font-family: 'JetBrains Mono'; src: url('fonts/JetBrainsMono-Regular.woff2') format('woff2'); font-display: swap; }
+
+:root {
+  --bg: #0F0E17;
+  --panel: #17152A;
+  --line: #2A2745;
+  --text: #E6E3FF;
+  --muted: #A9A5D1;
+  --accent: #6EE7A8;
+  --accent-hi: #A8F5CB;
+  --warn: #FF8FB1;
+  --gold: #FFD479;
+  --outline: #1B1530;
+  --vt: 'VT323', ui-monospace, monospace;
+  --mono: 'JetBrains Mono', ui-monospace, 'Cascadia Mono', Consolas, monospace;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--mono);
+  font-size: 12px;
+  line-height: 1.5;
+  padding: 8px 10px 14px;
+}
+.vt { font-family: var(--vt); }
+[hidden] { display: none !important; }
+
+/* tabs */
+.tabs { display: flex; gap: 2px; border-bottom: 2px solid var(--line); margin-bottom: 10px; }
+.tab {
+  font-family: var(--vt); font-size: 18px; line-height: 1;
+  background: transparent; color: var(--muted);
+  border: 0; border-bottom: 2px solid transparent; margin-bottom: -2px;
+  padding: 6px 8px 5px; cursor: pointer;
+}
+.tab:hover { color: var(--text); }
+.tab[aria-selected="true"] { color: var(--accent); border-bottom-color: var(--accent); }
+
+/* stage */
+.stage { position: relative; display: flex; flex-direction: column; align-items: center; padding-top: 4px; }
+.bubble {
+  position: relative; align-self: stretch;
+  margin: 0 0 18px; padding: 8px 10px;
+  background: var(--panel); border: 2px solid var(--text); color: var(--text);
+  font-size: 19px; line-height: 1.15; min-height: 44px;
+  box-shadow: 3px 3px 0 var(--outline);
+}
+.bubble::after {
+  content: ''; position: absolute; left: 50%; bottom: -10px; margin-left: -6px;
+  border: 6px solid transparent; border-top: 6px solid var(--text); border-bottom: 0;
+}
+.bubble.muted { color: var(--muted); }
+
+.pip-wrap { position: relative; width: 128px; height: 112px; display: flex; align-items: flex-end; justify-content: center; }
+.pip { width: 128px; height: 96px; }
+#sprite { display: block; width: 128px; height: 96px; image-rendering: pixelated; image-rendering: crisp-edges; }
+
+/* meter */
+.meter { display: flex; align-items: center; gap: 8px; margin: 14px 0 12px; }
+.label { font-size: 16px; color: var(--muted); letter-spacing: 1px; }
+.blocks { display: flex; gap: 3px; flex: 1; }
+.block { flex: 1; height: 12px; max-width: 18px; background: var(--line); }
+.block.on { background: var(--accent); }
+.block.on.low { background: var(--warn); }
+.faith-num { font-size: 17px; color: var(--text); min-width: 34px; text-align: right; }
+
+/* controls */
+.controls { display: flex; gap: 8px; }
+.btn {
+  font-family: var(--vt); font-size: 17px; line-height: 1;
+  background: var(--panel); color: var(--text);
+  border: 2px solid var(--line); padding: 5px 10px; cursor: pointer;
+  box-shadow: 2px 2px 0 var(--outline);
+}
+.btn:hover { filter: brightness(1.15); border-color: var(--accent); }
+.btn:active { transform: translate(2px, 2px); box-shadow: none; }
+.btn:focus-visible, .tab:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+
+/* diary + achievements */
+.diary, .achievements { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+.diary li, .achievements li { border-left: 3px solid var(--line); padding: 2px 0 2px 10px; }
+.entry-head, .ach-title { font-size: 18px; color: var(--accent); line-height: 1.1; }
+.entry-text, .ach-blurb { margin: 2px 0 0; color: var(--text); }
+.ach-when { color: var(--muted); font-size: 11px; margin-top: 2px; }
+.empty { font-size: 18px; color: var(--muted); margin: 8px 0; line-height: 1.2; }
+
+/* --- keyframes (mockup) --- */
+@keyframes bob { 0% { transform: translateY(0) } 50% { transform: translateY(-4px) } 100% { transform: translateY(0) } }
+@keyframes firej { 0% { transform: translateY(0) rotate(-3deg) } 50% { transform: translateY(-8px) rotate(3deg) } }
+@keyframes shockj { 0% { transform: translateY(0) scale(1) } 30% { transform: translateY(-18px) scale(1.08, .94) } 60% { transform: translateY(0) scale(.94, 1.08) } 100% { transform: translateY(0) scale(1) } }
+@keyframes judge { 0%, 100% { transform: translateX(0) } 50% { transform: translateX(6px) } }
+@keyframes breathe { 0%, 100% { transform: scale(1, 1) } 50% { transform: scale(1.04, .96) } }
+@keyframes flop { 0% { transform: rotate(0) translateY(0) } 100% { transform: rotate(-90deg) translateY(10px) } }
+@keyframes party { 0% { transform: translateY(0) } 25% { transform: translateY(-16px) rotate(-6deg) } 50% { transform: translateY(0) } 75% { transform: translateY(-16px) rotate(6deg) } }
+@keyframes zf { 0% { opacity: 0; transform: translate(0, 0) } 20% { opacity: 1 } 100% { opacity: 0; transform: translate(18px, -46px) } }
+@keyframes drip { 0% { opacity: 1; transform: translateY(0) } 100% { opacity: 0; transform: translateY(22px) } }
+@keyframes flick { 0%, 100% { transform: scaleY(1); opacity: 1 } 50% { transform: scaleY(1.6); opacity: .7 } }
+@keyframes rise { 0% { opacity: .9; transform: translateY(0) } 100% { opacity: 0; transform: translateY(-40px) } }
+@keyframes fall { 0% { transform: translateY(-30px) rotate(0) } 100% { transform: translateY(150px) rotate(180deg) } }
+@keyframes shake { 0%, 100% { transform: translateX(0) } 20% { transform: translateX(-6px) } 40% { transform: translateX(6px) } 60% { transform: translateX(-4px) } 80% { transform: translateX(4px) } }
+@keyframes blink { 0%, 100% { opacity: 1 } 50% { opacity: 0 } }
+
+/* moods */
+.pip-idle { animation: bob 1.2s steps(2) infinite; }
+.pip-fire { animation: firej .22s steps(2) infinite; }
+.pip-shock { animation: shockj .6s steps(4) 1; }
+.pip-judge { animation: judge 2.4s steps(2) infinite; }
+.pip-sleep { animation: breathe 2.4s steps(3) infinite; }
+.pip-dead { animation: flop .5s steps(3) forwards; transform-origin: 50% 100%; }
+.pip-party { animation: party .7s steps(4) infinite; }
+.pip-sulk { animation: bob 2.4s steps(2) infinite; }
+.shake { animation: shake .4s steps(5) 1; }
+
+/* fx overlays */
+.fx { position: absolute; inset: 0; pointer-events: none; overflow: visible; }
+.fx .p { position: absolute; font-family: var(--vt); line-height: 1; }
+
+.fx-fire .p { bottom: 0; color: #FFB547; font-size: 16px; animation: flick .25s steps(2) infinite; transform-origin: 50% 100%; }
+.fx-fire .p0 { left: 6px; } .fx-fire .p1 { left: 58px; animation-delay: .1s; color: #FF8FB1; } .fx-fire .p2 { right: 6px; }
+
+.fx-sweat .p { top: 22px; color: #8FD3FF; font-size: 18px; animation: drip .9s steps(4) infinite; }
+.fx-sweat .p0 { right: 8px; } .fx-sweat .p1 { left: 10px; animation-delay: .45s; }
+
+.fx-zzz .p { top: 18px; right: 10px; color: var(--muted); font-size: 20px; animation: zf 2.4s steps(6) infinite; }
+.fx-zzz .p1 { animation-delay: .8s; } .fx-zzz .p2 { animation-delay: 1.6s; }
+
+.fx-smoke .p { top: 30px; color: #9A98B8; font-size: 16px; animation: rise 1.6s steps(5) infinite; }
+.fx-smoke .p0 { left: 40px; } .fx-smoke .p1 { left: 60px; animation-delay: .5s; } .fx-smoke .p2 { left: 80px; animation-delay: 1s; }
+
+.fx-confetti .p { top: 0; font-size: 10px; animation: fall 1.4s steps(7) infinite; }
+.fx-confetti .p0 { left: 4px; color: #6EE7A8; } .fx-confetti .p1 { left: 20px; color: #FFD479; animation-delay: .2s; }
+.fx-confetti .p2 { left: 36px; color: #FF8FB1; animation-delay: .5s; } .fx-confetti .p3 { left: 52px; color: #B9A8FF; animation-delay: .1s; }
+.fx-confetti .p4 { left: 68px; color: #6EE7A8; animation-delay: .7s; } .fx-confetti .p5 { left: 84px; color: #FFD479; animation-delay: .3s; }
+.fx-confetti .p6 { left: 100px; color: #FF8FB1; animation-delay: .9s; } .fx-confetti .p7 { left: 116px; color: #B9A8FF; animation-delay: .6s; }
+
+.fx-question .p { top: 0; right: 4px; color: var(--gold); font-size: 26px; animation: blink 1s steps(1) infinite; }
+
+@media (prefers-reduced-motion: reduce) { * { animation: none !important; } }

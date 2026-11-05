@@ -5,11 +5,184 @@
   "version": "0.0.1",
   "publisher": "TODO-publisher",
   "license": "MIT",
-  "engines": { "vscode": "^1.93.0" },
-  "categories": ["Other"],
+  "engines": {
+    "vscode": "^1.93.0"
+  },
+  "categories": [
+    "Other"
+  ],
   "main": "./dist/extension.js",
-  "activationEvents": ["onStartupFinished"],
-  "contributes": {},
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "pip",
+          "title": "Pip",
+          "icon": "media/pip.svg"
+        }
+      ]
+    },
+    "views": {
+      "pip": [
+        {
+          "type": "webview",
+          "id": "pip.corner",
+          "name": "Pip's Corner"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "pip.hush",
+        "title": "Pip: Hush"
+      },
+      {
+        "command": "pip.wake",
+        "title": "Pip: Wake"
+      },
+      {
+        "command": "pip.toggleMode",
+        "title": "Pip: Toggle Dry/Savage"
+      },
+      {
+        "command": "pip.showDiary",
+        "title": "Pip: Show Diary"
+      },
+      {
+        "command": "pip.roastCard",
+        "title": "Pip: Make Roast Card"
+      },
+      {
+        "command": "pip.resetFaith",
+        "title": "Pip: Reset Faith"
+      }
+    ],
+    "configuration": {
+      "title": "Pip",
+      "properties": {
+        "pip.mode": {
+          "type": "string",
+          "enum": [
+            "dry",
+            "savage"
+          ],
+          "default": "dry",
+          "description": "How sharp Pip is. Dry is deadpan; savage is less polite."
+        },
+        "pip.cooldownSeconds": {
+          "type": "number",
+          "default": 3.5,
+          "minimum": 0,
+          "description": "Minimum seconds between remarks."
+        },
+        "pip.pasteThreshold": {
+          "type": "number",
+          "default": 200,
+          "minimum": 1,
+          "description": "Characters in one paste before Pip notices."
+        },
+        "pip.lateNightHour": {
+          "type": "number",
+          "default": 23,
+          "minimum": 0,
+          "maximum": 23,
+          "description": "Hour (0-23) from which Pip considers it late."
+        },
+        "pip.surface": {
+          "type": "string",
+          "enum": [
+            "panel",
+            "statusbar",
+            "toasts"
+          ],
+          "default": "panel",
+          "enumDescriptions": [
+            "Remarks appear in Pip's Corner (and the status bar).",
+            "Remarks appear in the status bar.",
+            "Remarks also pop up as notifications."
+          ],
+          "description": "Where Pip's remarks show up."
+        },
+        "pip.detectors": {
+          "type": "object",
+          "default": {
+            "paste": true,
+            "massDelete": true,
+            "undoSpam": true,
+            "frenzy": true,
+            "debugPrint": true,
+            "lateNight": true,
+            "idleReturn": true,
+            "runs": true,
+            "badFileName": true,
+            "testWritten": true,
+            "commits": true,
+            "saveSpam": true,
+            "ancientFile": true
+          },
+          "properties": {
+            "paste": {
+              "type": "boolean",
+              "default": true
+            },
+            "massDelete": {
+              "type": "boolean",
+              "default": true
+            },
+            "undoSpam": {
+              "type": "boolean",
+              "default": true
+            },
+            "frenzy": {
+              "type": "boolean",
+              "default": true
+            },
+            "debugPrint": {
+              "type": "boolean",
+              "default": true
+            },
+            "lateNight": {
+              "type": "boolean",
+              "default": true
+            },
+            "idleReturn": {
+              "type": "boolean",
+              "default": true
+            },
+            "runs": {
+              "type": "boolean",
+              "default": true
+            },
+            "badFileName": {
+              "type": "boolean",
+              "default": true
+            },
+            "testWritten": {
+              "type": "boolean",
+              "default": true
+            },
+            "commits": {
+              "type": "boolean",
+              "default": true
+            },
+            "saveSpam": {
+              "type": "boolean",
+              "default": true
+            },
+            "ancientFile": {
+              "type": "boolean",
+              "default": true
+            }
+          },
+          "additionalProperties": false,
+          "description": "Turn individual habits Pip watches on or off."
+        }
+      }
+    }
+  },
   "scripts": {
     "build": "node esbuild.mjs",
     "watch": "node esbuild.mjs --watch",
