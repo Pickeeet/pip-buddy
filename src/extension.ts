@@ -62,6 +62,13 @@ export function activate(ctx: vscode.ExtensionContext): void {
       .map((a) => ({ id: a.id, title: a.title, blurb: a.blurb, at: state.achievements[a.id] }))
       .sort((a, b) => a.at - b.at),
   });
+  /** Drop the current remark: back to the resting look with an empty bubble. */
+  const rest = (): void => {
+    if (moodTimer) { clearTimeout(moodTimer); moodTimer = undefined; }
+    mood = restingMood(Date.now());
+    fx = '';
+    line = null;
+  };
   const push = (): void => {
     const s = snapshot();
     panel.setState(s);
@@ -85,12 +92,13 @@ export function activate(ctx: vscode.ExtensionContext): void {
 
   ctx.subscriptions.push({ dispose: bus.on((e: PipEvent) => {
     const r = brain.handle(e);
+    if (e.type === 'hush') rest(); // the "(Pip has turned around.)" placeholder shows at once
     if (r) {
       mood = r.mood;
       fx = r.fx;
       line = r.text;
       if (moodTimer) clearTimeout(moodTimer);
-      moodTimer = setTimeout(() => { mood = restingMood(Date.now()); fx = ''; push(); }, MOOD_HOLD_MS);
+      moodTimer = setTimeout(() => { moodTimer = undefined; rest(); push(); }, MOOD_HOLD_MS);
       if (cfg.surface === 'toasts') void vscode.window.showInformationMessage(`Pip: ${r.text}`);
     }
     changed();
@@ -136,7 +144,13 @@ export function activate(ctx: vscode.ExtensionContext): void {
   );
 
   const tick = setInterval(() => {
-    if (rollover(state, Date.now(), rng).length > 0) changed();
+    const now = Date.now();
+    const wrote = rollover(state, now, rng).length > 0;
+    // While no remark is showing, put the night cap on at 00:00 and take it off at 05:00.
+    const recapped = !moodTimer && mood !== restingMood(now);
+    if (recapped) mood = restingMood(now);
+    if (wrote) changed();
+    else if (recapped) push();
   }, ROLLOVER_MS);
   ctx.subscriptions.push({ dispose: () => {
     clearInterval(tick);
