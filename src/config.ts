@@ -12,6 +12,7 @@ export interface PipConfig {
 
 export const DETECTOR_KEYS = [
   'paste', 'massDelete', 'undoSpam', 'frenzy', 'debugPrint', 'lateNight', 'idleReturn',
+  'runs', 'badFileName', 'testWritten', 'commits', 'saveSpam', 'ancientFile',
 ] as const;
 
 export function readConfig(): PipConfig {
