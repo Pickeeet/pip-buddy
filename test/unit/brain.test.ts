@@ -1,13 +1,15 @@
 import { describe, it, expect } from 'vitest';
 import { Brain } from '../../src/brain/brain';
 import { initialState } from '../../src/brain/initialState';
-import lines from '../../src/lines/lines.json';
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
 import type { LinePack, PipEvent, PipEventType } from '../../src/types';
 
+const lines: LinePack = JSON.parse(readFileSync(join(__dirname, '..', '..', 'src', 'lines', 'lines.json'), 'utf8'));
 const DAY = 86_400_000;
 const T0 = new Date(2026, 5, 10, 12, 0, 0).getTime();
 const ev = (type: PipEventType, at: number, data: PipEvent['data'] = {}): PipEvent => ({ type, at, data });
-const mk = (t = T0) => new Brain(initialState(t), lines as LinePack, { rng: () => 0, cooldownMs: 3500 });
+const mk = (t = T0) => new Brain(initialState(t), lines, { rng: () => 0, cooldownMs: 3500 });
 const failsThenPass = (b: Brain, t: number) => {
   b.handle(ev('runFail', t, { streak: 1 }));
   b.handle(ev('runFail', t + 5 * 60_000, { streak: 2 }));
