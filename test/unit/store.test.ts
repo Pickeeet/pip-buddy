@@ -2,6 +2,8 @@ import { describe, it, expect } from 'vitest';
 import { load, save, merge, type KV } from '../../src/store';
 import { initialState } from '../../src/brain/initialState';
 import { emptyDay } from '../../src/brain/memory';
+import { localDate } from '../../src/brain/time';
+import { rollover } from '../../src/brain/diary';
 import type { PipState } from '../../src/types';
 
 const NOW = 1_800_000_000_000;
@@ -146,5 +148,41 @@ describe('save', () => {
     await save(kv, st({ diary: [e('w1')] }));
     await save(kv, st({ diary: [e('w2')] }));
     expect((kv.data.get(KEY) as PipState).diary).toEqual([e('w2')]);
+  });
+});
+
+describe('pruning to 28 days', () => {
+  const NOW2 = new Date(2026, 10, 5, 12).getTime();
+  const DAYMS = 86_400_000;
+  const manyDays = (n: number): PipState => {
+    const s = initialState(NOW2 - 120 * DAYMS);
+    for (let i = 1; i <= n; i++) {
+      s.days[localDate(NOW2 - i * DAYMS)] = { ...emptyDay(), counts: { paste: i }, badNames: [], commitMsgs: [] };
+    }
+    return s;
+  };
+  const newest28 = (s: PipState): string[] => Object.keys(s.days).sort();
+
+  it('load keeps only the 28 newest day keys', () => {
+    const loaded = load(fakeKv(JSON.parse(JSON.stringify(manyDays(100)))), NOW2);
+    expect(Object.keys(loaded.days)).toHaveLength(28);
+    expect(newest28(loaded)[0]).toBe(localDate(NOW2 - 28 * DAYMS));
+    expect(newest28(loaded)[27]).toBe(localDate(NOW2 - 1 * DAYMS));
+  });
+  it('merge keeps only the 28 newest day keys, even when one side holds more', () => {
+    const m = merge(manyDays(100), st({ firstSeen: NOW2 }));
+    expect(Object.keys(m.days)).toHaveLength(28);
+    expect(newest28(m)[0]).toBe(localDate(NOW2 - 28 * DAYMS));
+  });
+  it('save does not resurrect days pruned in memory', async () => {
+    const kv = fakeKv(JSON.parse(JSON.stringify(manyDays(100))));
+    const live = manyDays(28);
+    await save(kv, live);
+    expect(Object.keys((kv.data.get(KEY) as PipState).days)).toHaveLength(28);
+  });
+  it('rollover on a 100-day state writes at most 28 entries and nothing on the second call', () => {
+    const s = load(fakeKv(JSON.parse(JSON.stringify(manyDays(100)))), NOW2);
+    expect(rollover(s, NOW2, () => 0).length).toBeLessThanOrEqual(28);
+    expect(rollover(s, NOW2, () => 0)).toEqual([]);
   });
 });

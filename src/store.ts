@@ -11,6 +11,7 @@ export interface KV {
 const KEY = 'pip.state';
 const MAX_DIARY = 60;
 const MAX_RECENT = 20;
+const KEEP_DAYS = 28;
 
 type Obj = Record<string, unknown>;
 const isObj = (v: unknown): v is Obj => typeof v === 'object' && v !== null && !Array.isArray(v);
@@ -35,6 +36,13 @@ function readDay(v: unknown): DayStats | undefined {
   d.faithMin = num(v.faithMin, d.faithMin);
   d.faithMax = num(v.faithMax, d.faithMax);
   return d;
+}
+
+/** Drops all but the `KEEP_DAYS` newest day keys (date keys sort lexically). Mutates and returns `days`. */
+function newestDays(days: Record<string, DayStats>): Record<string, DayStats> {
+  const keys = Object.keys(days).sort();
+  for (const k of keys.slice(0, Math.max(0, keys.length - KEEP_DAYS))) delete days[k];
+  return days;
 }
 
 function readDiary(v: unknown): DiaryEntry[] {
@@ -65,6 +73,7 @@ function parse(raw: unknown, now: number): PipState {
       const d = readDay(v);
       if (d) fresh.days[k] = d;
     }
+    newestDays(fresh.days);
   }
   if (isObj(raw.achievements)) {
     for (const [k, t] of Object.entries(raw.achievements)) if (isNum(t)) fresh.achievements[k] = t;
@@ -126,7 +135,7 @@ export function merge(a: PipState, b: PipState): PipState {
     mode: b.mode,
     hushed: b.hushed,
     firstSeen: Math.min(a.firstSeen, b.firstSeen),
-    days,
+    days: newestDays(days),
     achievements,
     diary,
     lastCrackAt: b.lastCrackAt,

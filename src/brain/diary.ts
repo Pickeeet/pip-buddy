@@ -103,10 +103,12 @@ export function writeDiary(state: PipState, date: string, rng: Rng): DiaryEntry 
  */
 export function rollover(state: PipState, now: number, rng: Rng): DiaryEntry[] {
   const today = localDate(now);
+  // Once the diary is full, anything older than its oldest entry would be written and trimmed straight away.
+  const oldestKept = state.diary.length >= KEEP_ENTRIES ? state.diary[0].date : '';
   const out: DiaryEntry[] = [];
-  for (const date of Object.keys(state.days).filter(d => d < today).sort()) {
+  for (const date of Object.keys(state.days).filter(d => d < today && d >= oldestKept).sort()) {
     const e = writeDiary(state, date, rng);
     if (e) out.push(e);
   }
-  return out;
+  return out.filter(e => state.diary.includes(e));
 }

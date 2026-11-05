@@ -109,4 +109,19 @@ describe('rollover', () => {
     expect(out.map(e => e.date)).toEqual(['2026-03-01', '2026-03-03']);
     expect(s.diary.map(e => e.date)).toEqual(['2026-03-01', '2026-03-02', '2026-03-03']);
   });
+
+  it('skips dates older than the oldest diary entry it can keep, and returns only entries that remain', () => {
+    const s = initialState(at(2026, 1, 1));
+    for (let i = 0; i < 60; i++) {
+      const d = localDate(at(2026, 2, 1) + i * DAY);
+      withDay(s, d, { counts: { paste: 1 } });
+      writeDiary(s, d, rng);
+    }
+    withDay(s, '2026-01-15', { counts: { paste: 3 } }); // older than anything the full diary keeps
+    const before = JSON.stringify(s.diary);
+    const now = at(2026, 5, 1);
+    expect(rollover(s, now, rng)).toEqual([]);
+    expect(rollover(s, now, rng)).toEqual([]);
+    expect(JSON.stringify(s.diary)).toBe(before);
+  });
 });
