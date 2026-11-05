@@ -13,7 +13,7 @@ const TEMPLATES: Record<DiaryType, string[]> = {
   massDelete: [
     "Human deleted {n} chunks of code, then stared at the gap. Called it 'refactoring'.",
     'Human deleted {n} large blocks today. I watched each one go. Nobody mourned.',
-    'The delete key was used with confidence {n} times. The confidence was not earned.',
+    'Human deleted with great confidence, {n} times. The confidence was not earned.',
   ],
   paste: [
     'Human pasted {n} large blocks today. Understanding was not included.',
