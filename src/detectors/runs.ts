@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import type { EventBus } from '../bus';
 import type { PipConfig } from '../config';
-import { RunTracker } from './classify/runs';
+import { classifyCommandLine, RunTracker } from './classify/runs';
 
 const DEDUPE_MS = 1000;
 
@@ -20,5 +20,9 @@ export function registerRunDetectors(
   };
 
   ctx.subscriptions.push(vscode.tasks.onDidEndTaskProcess((e) => handle(e.exitCode)));
-  ctx.subscriptions.push(vscode.window.onDidEndTerminalShellExecution((e) => handle(e.exitCode)));
+  // Terminal commands count only when they look like a build/test/run (cd, ls, git ... do not).
+  // The command line is read transiently here and never stored.
+  ctx.subscriptions.push(vscode.window.onDidEndTerminalShellExecution((e) => {
+    if (classifyCommandLine(e.execution.commandLine.value) === 'run') handle(e.exitCode);
+  }));
 }

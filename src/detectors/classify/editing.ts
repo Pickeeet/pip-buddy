@@ -77,6 +77,7 @@ export function nightKey(at: number): string {
 /** True in the late-night window (from `hour` until 05:00) if it has not already fired this night. */
 export function lateNightOnce(at: number, lastFired: string | null, hour: number): boolean {
   const h = localHour(at);
-  const night = h >= hour || h < NIGHT_END_HOUR;
+  // An hour before 05:00 (e.g. 3) means "from 03:00 until 05:00"; it must not match all day.
+  const night = hour >= NIGHT_END_HOUR ? (h >= hour || h < NIGHT_END_HOUR) : (h >= hour && h < NIGHT_END_HOUR);
   return night && lastFired !== nightKey(at);
 }

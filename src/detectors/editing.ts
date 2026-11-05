@@ -47,7 +47,7 @@ export function registerEditingDetectors(
     if (on(c, 'frenzy') && frenzy.hit(at)) emit('frenzy', at);
     if (isUndo && on(c, 'undoSpam') && undos.hit(at)) emit('undoSpam', at, { count: 5 });
 
-    if (on(c, 'debugPrint')) {
+    if (on(c, 'debugPrint') && !isUndo && e.reason !== vscode.TextDocumentChangeReason.Redo) {
       const added = countDebugPrintsInChanges(plain);
       if (added > 0) {
         const day = localDate(at);

@@ -30,6 +30,14 @@ export function isAncient(mtimeMs: number, now: number): boolean {
   return now - mtimeMs >= ANCIENT_DAYS * DAY_MS;
 }
 
+const DEPENDENCY_DIRS = ['/node_modules/', '/.venv/', '/venv/', '/site-packages/', '/vendor/', '/.git/'];
+
+/** True for files inside dependency/tooling folders (either slash style, any case). */
+export function isDependencyPath(path: string): boolean {
+  const p = path.replace(/\\/g, '/').toLowerCase();
+  return DEPENDENCY_DIRS.some((d) => p.includes(d));
+}
+
 /** In-memory "once per key per day" gate. Forgets older days. */
 export class OncePerDay {
   private day = '';

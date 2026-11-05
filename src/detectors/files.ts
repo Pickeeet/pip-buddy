@@ -3,7 +3,7 @@ import type { EventBus } from '../bus';
 import type { PipConfig } from '../config';
 import { localDate } from '../brain/time';
 import { RateWindow } from './classify/editing';
-import { isAncient, isBadFileName, isTestFile, OncePerDay } from './classify/files';
+import { isAncient, isBadFileName, isDependencyPath, isTestFile, OncePerDay } from './classify/files';
 
 const baseName = (uri: vscode.Uri): string => uri.path.split('/').pop() ?? '';
 
@@ -16,13 +16,16 @@ export function registerFileDetectors(
   const badDay = new OncePerDay();
   const on = (k: string): boolean => cfg().detectors[k] !== false;
 
+  // Only for newly created/renamed entries (not saves of existing files), and never directories.
   const checkName = (uri: vscode.Uri): void => {
     if (uri.scheme !== 'file' || !on('badFileName')) return;
     const file = baseName(uri);
-    const at = Date.now();
-    if (isBadFileName(file) && badDay.first(uri.toString(), localDate(at))) {
-      bus.emit({ type: 'badFileName', at, data: { file } });
-    }
+    if (!isBadFileName(file)) return;
+    void Promise.resolve(vscode.workspace.fs.stat(uri)).then((st) => {
+      if (st.type & vscode.FileType.Directory) return;
+      const at = Date.now();
+      if (badDay.first(uri.toString(), localDate(at))) bus.emit({ type: 'badFileName', at, data: { file } });
+    }, () => { /* unreadable: no event */ });
   };
 
   ctx.subscriptions.push(vscode.workspace.onDidSaveTextDocument((doc) => {
@@ -35,7 +38,6 @@ export function registerFileDetectors(
     if (on('testWritten') && isTestFile(file) && testDay.first(doc.uri.toString(), localDate(at))) {
       bus.emit({ type: 'testWritten', at, data: {} });
     }
-    checkName(doc.uri);
   }));
 
   ctx.subscriptions.push(vscode.workspace.onDidCreateFiles((e) => { for (const f of e.files) checkName(f); }));
@@ -47,6 +49,8 @@ export function registerFileDetectors(
   const checkAncient = (editor: vscode.TextEditor | undefined): void => {
     const uri = editor?.document.uri;
     if (!uri || uri.scheme !== 'file' || !on('ancientFile')) return;
+    // Dependencies and files outside the workspace are not "your" ancient files.
+    if (vscode.workspace.getWorkspaceFolder(uri) === undefined || isDependencyPath(uri.path)) return;
     const at = Date.now();
     if (!ancientDay.first(uri.toString(), localDate(at))) return;
     const file = baseName(uri);

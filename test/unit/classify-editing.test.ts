@@ -91,6 +91,20 @@ describe('lateNightOnce', () => {
   it('does not fire in daytime', () => {
     expect(lateNightOnce(new Date(2026, 10, 5, 14).getTime(), null, 23)).toBe(false);
   });
+  it.each([0, 3])('a lateNightHour of %i does not fire at 14:00', (hour) => {
+    expect(lateNightOnce(new Date(2026, 10, 5, 14).getTime(), null, hour)).toBe(false);
+  });
+  it('a lateNightHour of 3 fires at 03:30 but not at 02:30', () => {
+    expect(lateNightOnce(new Date(2026, 10, 5, 3, 30).getTime(), null, 3)).toBe(true);
+    expect(lateNightOnce(new Date(2026, 10, 5, 2, 30).getTime(), null, 3)).toBe(false);
+  });
+  it('a lateNightHour of 0 fires at 00:30', () => {
+    expect(lateNightOnce(new Date(2026, 10, 5, 0, 30).getTime(), null, 0)).toBe(true);
+  });
+  it('the default 23 still fires at 02:00 and 23:00', () => {
+    expect(lateNightOnce(new Date(2026, 10, 5, 2).getTime(), null, 23)).toBe(true);
+    expect(lateNightOnce(new Date(2026, 10, 5, 23).getTime(), null, 23)).toBe(true);
+  });
   it('does not fire again after midnight in the same night', () => {
     const after = new Date(2026, 10, 6, 0, 10).getTime();
     expect(nightKey(after)).toBe(nightKey(at));

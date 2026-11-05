@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { isBadFileName, isTestFile, isAncient, OncePerDay } from '../../src/detectors/classify/files';
+import { isBadFileName, isTestFile, isAncient, isDependencyPath, OncePerDay } from '../../src/detectors/classify/files';
 import { RunTracker } from '../../src/detectors/classify/runs';
 
 describe('isBadFileName', () => {
@@ -90,4 +90,18 @@ describe('RunTracker', () => {
     expect(r.record(1, 0)).not.toBeNull();
     expect(r.record(0, 100)).toEqual({ type: 'runPass' });
   });
+});
+
+describe('isDependencyPath', () => {
+  it.each([
+    '/w/node_modules/left-pad/index.js', 'C:/w/node_modules/x/a.js', '/w/.venv/lib/a.py', '/w/venv/bin/a.py',
+    '/w/lib/python3/site-packages/x.py', '/w/vendor/a.go', '/w/.git/hooks/a', '/w/Node_Modules/a.js', 'C:/w/.GIT/config',
+  ])('flags %s', (p) => { expect(isDependencyPath(p)).toBe(true); });
+  it('handles backslash paths', () => {
+    expect(isDependencyPath('C:\\w\\node_modules\\x\\a.js')).toBe(true);
+    expect(isDependencyPath('C:\\w\\.GIT\\config')).toBe(true);
+    expect(isDependencyPath('C:\\w\\src\\a.ts')).toBe(false);
+  });
+  it.each(['/w/src/a.ts', '/w/vendors/a.ts', '/w/my_venv/a.py', '/w/.github/a.yml', 'C:/w/src/node_modules_notes.md'])(
+    'leaves %s alone', (p) => { expect(isDependencyPath(p)).toBe(false); });
 });
