@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { classifyCommit, firstLine, HeadTracker, isFreshCommit } from '../../src/detectors/classify/git';
+import { classifyCommit, classifyMessage, firstLine, HeadTracker, isFreshCommit } from '../../src/detectors/classify/git';
 
 describe('classifyCommit', () => {
   it('lazy messages', () => {
@@ -59,5 +59,12 @@ describe('isFreshCommit', () => {
     expect(isFreshCommit(new Date(now - 5000), now)).toBe(true);
     expect(isFreshCommit(undefined, now)).toBe(true);
     expect(isFreshCommit(new Date(now - 3600_000), now)).toBe(false);
+  });
+});
+
+describe('classifyMessage', () => {
+  it('judges the first line only', () => {
+    expect(classifyMessage('wip\n\nlong descriptive body about the change')).toBe('commitLazy');
+    expect(classifyMessage('Add cart totals rounding\n\nbody')).toBe('commitGood');
   });
 });

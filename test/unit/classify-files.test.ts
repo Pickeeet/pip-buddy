@@ -14,6 +14,16 @@ describe('isBadFileName', () => {
     expect(isBadFileName('newsletter.ts')).toBe(false);
     expect(isBadFileName('')).toBe(false);
   });
+  it('needs a word start: ordinary words containing cursed ones are fine', () => {
+    for (const n of ['threshold.ts', 'gold.ts', 'scaffold.ts', 'renew.ts', 'unreal.ts', 'newsletter.ts', 'cart.ts']) {
+      expect(isBadFileName(n)).toBe(false);
+    }
+  });
+  it('matches at word starts incl. separators and camelCase', () => {
+    for (const n of ['utils_final_v3_REAL.ts', 'cart-old.ts', 'cartCopy.ts', 'temp2.ts', 'new1.ts', 'report final.ts', 'utilsFinal.ts']) {
+      expect(isBadFileName(n)).toBe(true);
+    }
+  });
   it('only looks at the stem, not the extension', () => {
     expect(isBadFileName('cart.copy')).toBe(false);
     expect(isBadFileName('.gitignore')).toBe(false);

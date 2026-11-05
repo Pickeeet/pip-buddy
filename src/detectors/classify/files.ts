@@ -1,4 +1,4 @@
-const BAD_NAME = /(final|_v\d+|REAL|copy|temp\d*|new\d*|old)\b/i;
+const BAD_TOKEN = /^(final|v\d+|real|copy|temp\d*|new\d*|old)$/i;
 const DAY_MS = 864e5;
 export const ANCIENT_DAYS = 365;
 
@@ -7,9 +7,13 @@ function stem(basename: string): string {
   return i > 0 ? basename.slice(0, i) : basename;
 }
 
-/** utils_final_v3_REAL.ts and friends. Looks at the stem only. */
+/**
+ * utils_final_v3_REAL.ts and friends. Looks at the stem only; a cursed word must start a word
+ * (stem start, after _ - . or space, or a camelCase boundary), so threshold/gold/renew are fine.
+ */
 export function isBadFileName(basename: string): boolean {
-  return BAD_NAME.test(stem(basename));
+  const words = stem(basename).replace(/([a-z0-9])([A-Z])/g, '$1 $2').split(/[_\-. ]+/);
+  return words.some((w) => BAD_TOKEN.test(w));
 }
 
 /** *.test.*, *.spec.*, *_test.*, test_*.py */

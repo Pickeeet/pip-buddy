@@ -28,7 +28,9 @@ export function registerFileDetectors(
   ctx.subscriptions.push(vscode.workspace.onDidSaveTextDocument((doc) => {
     if (doc.uri.scheme !== 'file') return;
     const at = Date.now();
-    if (on('saveSpam') && saves.hit(at)) bus.emit({ type: 'saveSpam', at, data: { count: 5 } });
+    // Auto-save would saveSpam on its own; only manual saves count.
+    const manual = vscode.workspace.getConfiguration('files').get<string>('autoSave') === 'off';
+    if (manual && on('saveSpam') && saves.hit(at)) bus.emit({ type: 'saveSpam', at, data: { count: 5 } });
     const file = baseName(doc.uri);
     if (on('testWritten') && isTestFile(file) && testDay.first(doc.uri.toString(), localDate(at))) {
       bus.emit({ type: 'testWritten', at, data: {} });

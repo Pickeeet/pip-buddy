@@ -2,7 +2,7 @@ import * as vscode from 'vscode';
 import type { EventBus } from '../bus';
 import type { PipConfig } from '../config';
 import type { API, GitExtension, Repository } from '../git';
-import { classifyCommit, firstLine, HeadTracker, isFreshCommit } from './classify/git';
+import { classifyMessage, firstLine, HeadTracker, isFreshCommit } from './classify/git';
 
 export function registerGitDetectors(
   ctx: vscode.ExtensionContext, bus: EventBus, cfg: () => PipConfig,
@@ -32,7 +32,7 @@ export function registerGitDetectors(
         void Promise.resolve(repo.getCommit(sha)).then((c) => {
           const at = Date.now();
           if (!isFreshCommit(c.commitDate, at)) return; // checkout / pull, not a commit
-          bus.emit({ type: classifyCommit(c.message), at, data: { msg: firstLine(c.message) } });
+          bus.emit({ type: classifyMessage(c.message), at, data: { msg: firstLine(c.message) } });
         }, () => { /* commit unreadable: no event */ });
       }));
     };

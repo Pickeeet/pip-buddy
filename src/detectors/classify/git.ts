@@ -32,3 +32,8 @@ export class HeadTracker {
     return prev !== undefined && sha !== undefined && sha !== prev;
   }
 }
+
+/** Classifies the first line of a commit message only (so a wip subject with a long body is lazy). */
+export function classifyMessage(msg: string): 'commitLazy' | 'commitGood' {
+  return classifyCommit(firstLine(msg));
+}
